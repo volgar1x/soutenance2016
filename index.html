@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Soutenance</title>
+  <link rel="stylesheet" href="css/reveal.min.css">
+  <link rel="stylesheet" href="css/theme/black.min.css">
+  <link rel="stylesheet" href="lib/css/zenburn.min.css">
+  <link rel="stylesheet" href="css/font-awesome.min.css">
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+      <section>
+        <h1>Soutenance de stage</h1>
+        <h3>Antoine Chauvin</h3>
+
+        <p>Université du Havre 2015-2016</p>
+
+        <small><a href="http://blackrush.github.io/soutenance2016/">http://blackrush.github.io/soutenance2016/</a></small>
+      </section>
+
+      <section>
+        <section><h1>Introduction</h1></section>
+
+        <section>
+          <ol>
+            <li>Présentation de l'entreprise</li>
+            <li>Mon rôle au sein de l'entreprise</li>
+            <li>Le développement d'ERP</li>
+            <li>Migration de l'infrastructure</li>
+          </ol>
+        </section>
+      </section>
+
+      <section>
+        <section><h1>Présentation de l'entreprise</h1></section>
+
+        <section>
+          <h2>SIQUAL</h2>
+
+          <a href="https://www.siqual.fr/">https://www.siqual.fr/</a><br>
+          <i class="fa fa-twitter-square"></i> <a href="https://twitter.com/SIQUAL_FR">@SIQUAL_FR</a><br>
+          <i class="fa fa-facebook-square"></i> <a href="https://www.facebook.com/Siqual-1555572104741847/?fref=ts">Siqual</a>
+        </section>
+
+        <section>
+          <h2>SIQUAL</h2>
+
+          <ul>
+            <li>depuis 2014</li>
+            <li class="fragment">Seine Innopolis, à Rouen</li>
+            <li class="fragment">Le Vaisseau, au Havre</li>
+            <li class="fragment">16 employés</li>
+            <li class="fragment">moyenne d'âge ~26 ans</li>
+            <li class="fragment">maintenance, sécurité, ingénierie</li>
+          </ul>
+        </section>
+      </section>
+
+      <section>
+        <section><h1>Mon rôle au sein de l'entreprise</h1></section>
+
+        <section>
+          <h4>Mon rôle au sein de l'entreprise</h4>
+
+          <ul>
+            <li>concepteur/développeur web</li>
+            <li class="fragment">développement <em>odoo</em></li>
+            <li class="fragment">administration système</li>
+            <li class="fragment">gestion de projet</li>
+            <li class="fragment">relation client</li>
+          </ul>
+        </section>
+
+        <section>
+          <h4>
+            Mon rôle au sein de l'entreprise
+            <small>développement odoo</small>
+          </h4>
+
+          <ul>
+            <li>comptabilité française et internationale</li>
+            <li>gestion des ventes</li>
+            <li>gestion des relations clients</li>
+            <li>gestion des achats, approvisionnements, et stocks</li>
+            <li>gestion des ressources humaines</li>
+            <li class="fragment">base partenaires</li>
+            <li class="fragment">base articles</li>
+          </ul>
+        </section>
+
+        <section>
+          <h4>
+            Mon rôle au sein de l'entreprise
+            <small>administration système</small>
+          </h4>
+
+          <ul>
+            <li>
+              provisioning
+              <ul class="fragment">
+                <li>online.net</li>
+                <li>OVH</li>
+              </ul>
+            </li>
+            <li class="fragment">
+              déploiements
+              <ul>
+                <li>nouvelles versions</li>
+                <li>fixtures</li>
+              </ul>
+            </li>
+            <li class="fragment">
+              maintenance
+              <ul>
+                <li>mises-à-jour</li>
+                <li>sécurité</li>
+              </ul>
+            </li>
+          </ul>
+        </section>
+
+        <section>
+          <h4>
+            Mon rôle au sein de l'entreprise
+            <small>gestion de projet</small>
+          </h4>
+
+          <ul>
+            <li>prise de besoin</li>
+            <li>estimation temps-homme</li>
+            <li>priorisation</li>
+            <li>organisation</li>
+            <li>livraison</li>
+          </ul>
+        </section>
+
+        <section>
+          <h4>
+            Mon rôle au sein de l'entreprise <br>
+            <small>relation client</small>
+          </h4>
+
+          <ul>
+            <li>déplacements</li>
+            <li>à distance</li>
+            <li>pilotage</li>
+          </ul>
+        </section>
+      </section>
+
+      <section>
+        <section>
+          <h1>Le développement d'ERP</h1>
+        </section>
+
+        <section>
+          <h4>Le développement d'ERP</h4>
+
+          <ul>
+            <li>base de données PostgreSQL</li>
+            <li>développement Python</li>
+            <li>vues XML</li>
+            <li>architecture MVC</li>
+            <li>framework Odoo</li>
+            <li>logiciel Odoo</li>
+          </ul>
+        </section>
+
+        <section>
+          <h4>Le développement d'ERP</h4>
+
+          <pre><code class="hljs">
+# -*- coding: utf-8 -*-
+from openerp import models, fields, exceptions, api, _
+
+class ResPartnerGoogleContact(models.Model):
+    _name = 'res.partner.google_contact'
+
+    partner_id = fields.Many2one('res.partner', ondelete='cascade')
+    user_id = fields.Many2one('res.users', ondelete='cascade')
+    uri = fields.Char()
+          </code></pre>
+        </section>
+
+        <section>
+          <h4>Le développement d'ERP</h4>
+
+          <pre><code class="hljs">
+select extract(month from m.date) as mon,
+       extract(year from m.date) as year,
+       sum(m.product_uom_qty) as qty
+from stock_move m
+inner join stock_picking_type pt on pt.id=m.picking_type_id
+where m.product_id=%s
+  and m.state='done'
+  and pt.code='outgoing'
+group by year, mon
+order by year, mon
+          </code></pre>
+        </section>
+
+        <section>
+          <h4>Le développement d'ERP</h4>
+
+          <pre><code class="hljs">
+&lt;record id="form_partner_contacts" model="ir.ui.view"&gt;
+    &lt;field name="name"&gt;form_partner_contacts&lt;/field&gt;
+    &lt;field name="inherit_id" ref="base.view_partner_form"/&gt;
+    &lt;field name="model"&gt;res.partner&lt;/field&gt;
+
+    &lt;field name="arch" type="xml"&gt;
+        &lt;field name="name" position="after"&gt;
+            &lt;button name="btn_google_contacts_import"
+                    string="Import"
+                    type="object"
+                    class="oe_link"
+                    groups="base.group_no_one"/&gt;
+        &lt;/field&gt;
+    &lt;/field&gt;
+&lt;/record&gt;
+          </code></pre>
+        </section>
+
+        <section>
+          <h4>Le développement d'ERP</h4>
+
+          <pre><code>
+~/Workspace/siqual/erp_boilerplate(master ✔) tree
+.
+├── __init__.py
+├── __openerp__.py
+├── controllers
+│   └── __init__.py
+├── i18n
+├── models
+│   └── __init__.py
+├── reports
+├── security
+└── views
+
+6 directories, 4 files
+          </code></pre>
+        </section>
+
+        <section>
+          <h2>Le framework odoo</h2>
+
+          <ul>
+            <li>couche réseau HTTP/XMLRPC</li>
+            <li>couche données ORM</li>
+            <li>couche présentation HTML/CSS/JS</li>
+            <li>authentification</li>
+            <li>autorisation</li>
+            <li>internationalisation</li>
+            <li>localisation</li>
+            <li>tests unitaires</li>
+          </ul>
+
+          <aside class="notes">
+            Bootstrap, jQuery, Backbone, D3
+          </aside>
+        </section>
+
+        <section>
+          <h2>Le logiciel odoo</h2>
+
+          <ul>
+            <li>...</li>
+            <span class="fragment">
+              <li>e-mail en un clic &amp; personnalisable</li>
+              <li>e-commerce</li>
+              <li>point de vente</li>
+              <li>suivi de production</li>
+              <li>mass-mailing &amp; sondages</li>
+            </span>
+            <span class="fragment">
+              <li>gestion de projet</li>
+              <li>connexion aux banques</li>
+              <li>messagerie intégrée</li>
+              <li>chat global (comme Slack)</li>
+              <li>intégration Google</li>
+            </span>
+          </ul>
+
+          <aside class="notes">
+            - gestion de projets kanban <br>
+            - paul marius <br>
+            - restauration <br>
+          </aside>
+        </section>
+      </section>
+
+      <section>
+        <section><h1>Migration de l'infrastructure</h1></section>
+
+        <section>
+          <h1>Le mouvement DevOps</h1>
+        </section>
+
+        <section>
+          <h4>Le mouvement DevOps</h4>
+
+          <ul>
+            <li>admins systèmes toujours présents</li>
+            <li>rapprocher les équipes dév &amp; ops</li>
+            <li>réduire les temps de livraison</li>
+            <li>automatiser le plus possible</li>
+          </ul>
+        </section>
+
+        <section>
+          <h4>Le mouvement DevOps</h4>
+
+          <ul>
+            <li>intégration continue</li>
+            <li>déploiement continu</li>
+            <li>provisioning rapide &amp; temporaire</li>
+            <li>monitoring intelligent</li>
+          </ul>
+        </section>
+
+        <section>
+          <h4>Migration de l'infrastructure</h4>
+
+          <ul>
+            <li>Git</li>
+            <li>Docker</li>
+            <li>Ansible</li>
+            <li>Jenkins</li>
+          </ul>
+        </section>
+
+        <section>
+          <pre><code>
+- hosts: odoo
+  tasks:
+    - name: add authorized keys
+      authorized_key: user="{{ansible_user}}" key="{{item}}" state=present
+    - name: install docker
+      apt: name=docker.io state=installed
+    - name: start docker service
+      service: name=docker state=running enabled=yes
+    - name: install docker python library
+      pip: name=docker-py state=present
+    - name: connect to docker registry
+      docker_login:
+        registry: siqual.fr
+          </code></pre>
+        </section>
+
+        <section>
+          <pre><code>
+- name: launch db container
+  docker:
+    name: db
+    image: postgres:9.5
+    restart_policy: always
+    volumes:
+      - "/var/lib/postgresql/data:/var/lib/postgresql/data"
+          </code></pre>
+        </section>
+
+        <section>
+          <pre><code>
+- name: launch nginx container
+  docker:
+    name: nginx
+    image: nginx:alpine
+    state: started
+    restart_policy: always
+    links:
+      - "web"
+    ports:
+      - "80:80"
+      - "443:443"
+          </code></pre>
+        </section>
+
+        <section>
+          <img src="jenkins.png" alt="Jenkins">
+        </section>
+      </section>
+
+
+      <section>
+        <section><h1>Conclusion</h1></section>
+
+        <section>
+          <h4>Conclusion</h4>
+
+          <p>
+            SIQUAL me permet d'exercer ma passion
+            entouré d'une équipe extraordinaire
+            et m'a permis d'acquérir des responsabilités
+            là où d'autres entreprises n'auraient pas pu
+            et c'est avec plaisir que je poursuis
+            l'aventure
+          </p>
+        </section>
+      </section>
+
+
+      <section data-markdown>
+        # Je répond à vos questions
+      </section>
+
+      <section>
+        <a href="://www.dropbox.com/s/yol8bu8wk98exlf/Rapport%20de%20Stage%202016.pdf?dl=0">https://www.dropbox.com/s/yol8bu8wk98exlf/Rapport%20de%20Stage%202016.pdf?dl=0</a>
+      </section>
+
+      <section>
+        <a href="https://github.com/Blackrush/soutenance2016">https://github.com/Blackrush/soutenance2016</a>
+
+        <aside class="notes">
+          - Reveal.js <br>
+          - FontAwesome
+        </aside>
+      </section>
+
+    </div>
+  </div>
+
+  <script src="lib/js/head.min.js"></script>
+  <script src="plugin/notes/notes.js"></script>
+  <script src="js/reveal.min.js"></script>
+  <script>
+    Reveal.initialize({
+      controls: true,
+      progress: true,
+      history: true,
+      slideNumber: true,
+
+      dependencies: [
+        { src: 'plugin/markdown/marked.min.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+        { src: 'plugin/markdown/markdown.min.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+        { src: 'plugin/highlight/highlight.min.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+      ],
+    });
+  </script>
+</body>
+</html>
